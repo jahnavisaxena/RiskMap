@@ -1,108 +1,187 @@
-# RiskMap - GRC Automation Tool
+# RiskMap - GRC Automation Tool 🛡️
 
-A CLI-based Governance, Risk, and Compliance (GRC) tool that automates risk assessment and control mapping for SOC 2 and ISO 27001 frameworks.
+[![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Flask](https://img.shields.io/badge/Flask-Web%20Dashboard-green.svg)](https://flask.palletsprojects.com/)
 
-## Features
+A powerful Governance, Risk, and Compliance (GRC) tool featuring both a **CLI** for command-line operations and a **Web Dashboard** for visual risk management.
 
+![RiskMap Dashboard](docs/screenshot.png)
+
+## 🚀 Features
+
+### CLI Tool
 - 📊 **Risk Management**: Add, list, score, and delete risks
 - 🤖 **AI-Powered Mapping**: Intelligent control mapping using OpenAI GPT-4o-mini
-- 🔄 **Multi-Framework Support**: SOC 2 and ISO 27001 (extensible to HIPAA, GDPR, etc.)
-- 📁 **Export**: Generate audit-ready reports in CSV or JSON
-- ⚡ **Fallback Logic**: Keyword-based mapping when AI is unavailable
+- 🔄 **Multi-Framework Support**: SOC 2 and ISO 27001
+- 📁 **Export**: Generate audit-ready reports in CSV, JSON, or PDF
 
-## Installation
+### Web Dashboard
+- 📈 **Visual Analytics**: Charts for risks by status and owner
+- 🗺️ **Risk Heat Map**: Interactive 5x5 likelihood vs impact matrix
+- 🌙 **Dark Mode**: Toggle between light and dark themes
+- 🚨 **Top 5 Critical Risks**: Quick view of highest priority items
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/RiskMap.git
-   cd RiskMap
-   ```
+---
 
-2. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
+## 📦 Installation
 
-## Usage
+### Option 1: Install CLI via pip (Recommended)
+
+```bash
+pip install git+https://github.com/jahnavisaxena/RiskMap.git
+```
+
+After installation, use the `riskmap` command anywhere:
+```bash
+riskmap add "Data Breach" --likelihood 4 --impact 5
+riskmap list
+riskmap export --format pdf
+```
+
+### Option 2: Clone and Run Locally
+
+```bash
+# Clone the repository
+git clone https://github.com/jahnavisaxena/RiskMap.git
+cd RiskMap
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run CLI
+python main.py list
+
+# Run Web Dashboard
+python app.py
+# Visit http://localhost:5000
+```
+
+---
+
+## 🖥️ CLI Usage
 
 ### Basic Commands
 
-**Add a risk (SOC 2):**
+| Command | Description |
+|---------|-------------|
+| `riskmap add "Risk Name" -l 4 -i 5` | Add a new risk |
+| `riskmap list` | List all risks |
+| `riskmap delete <id>` | Delete a risk by ID |
+| `riskmap export --format csv` | Export to CSV |
+| `riskmap export --format pdf` | Export to PDF |
+
+### Add a Risk (SOC 2)
 ```bash
-python main.py add "Data Breach" --likelihood 4 --impact 5
+riskmap add "Data Breach" --likelihood 4 --impact 5
 ```
 
-**Add a risk (ISO 27001):**
+### Add a Risk (ISO 27001)
 ```bash
-python main.py add "SQL Injection" --desc "Web app vulnerable" --likelihood 5 --impact 5 --framework iso27001
+riskmap add "SQL Injection" --desc "Web app vulnerable" --likelihood 5 --impact 5 --framework iso27001
 ```
 
-**List all risks:**
-```bash
-python main.py list
-```
+### Enable AI-Powered Mapping
 
-**Export to CSV:**
-```bash
-python main.py export --format csv
-```
+Set your OpenAI API key:
 
-**Delete a risk:**
-```bash
-python main.py delete 1
-```
-
-### AI-Powered Mapping
-
-To enable AI-powered control mapping, set your OpenAI API key:
-
-**PowerShell:**
+**Windows PowerShell:**
 ```powershell
 $env:OPENAI_API_KEY="sk-..."
 ```
 
-**Bash:**
+**Linux/Mac:**
 ```bash
 export OPENAI_API_KEY="sk-..."
 ```
 
-## Project Structure
+---
+
+## 🌐 Web Dashboard
+
+Start the web server:
+```bash
+python app.py
+```
+
+Open [http://localhost:5000](http://localhost:5000) in your browser.
+
+### Dashboard Features:
+- **Stat Cards**: Total, Critical, High, Medium, Low risk counts
+- **Charts**: Risks by Status (doughnut) & Risks by Owner (bar)
+- **Heat Map**: Visual risk matrix (Likelihood × Impact)
+- **Risk Register**: Full table with CRUD operations
+- **Dark Mode**: 🌙 Toggle in header
+
+---
+
+## 📁 Project Structure
 
 ```
 RiskMap/
-├── main.py                      # Entry point
+├── app.py                    # Flask web server
+├── main.py                   # CLI entry point
+├── setup.py                  # pip installation config
+├── requirements.txt
 ├── src/
 │   ├── riskmap/
-│   │   ├── cli.py              # CLI commands
-│   │   ├── risk_manager.py     # Risk CRUD operations
-│   │   ├── risk_scoring.py     # Scoring logic
-│   │   ├── control_mapper.py   # AI + keyword mapping
-│   │   └── register_exporter.py# CSV/JSON export
+│   │   ├── cli.py           # CLI commands (Typer)
+│   │   ├── risk_manager.py  # Risk CRUD operations
+│   │   ├── risk_scoring.py  # Scoring logic
+│   │   ├── control_mapper.py# AI + keyword mapping
+│   │   └── register_exporter.py
 │   └── data/
-│       ├── soc2_controls.json  # SOC 2 controls database
-│       └── iso27001_controls.json # ISO 27001 controls
-├── tests/
-│   └── test_core.py            # Unit tests
-└── requirements.txt
+│       ├── soc2_controls.json
+│       └── iso27001_controls.json
+├── static/
+│   ├── css/style.css
+│   └── js/app.js
+├── templates/
+│   └── index.html
+└── tests/
+    └── test_core.py
 ```
 
-## Frameworks Supported
+---
+
+## 🛠️ Technologies
+
+| Technology | Purpose |
+|------------|---------|
+| **Python 3.8+** | Core language |
+| **Flask** | Web framework |
+| **Typer + Rich** | Beautiful CLI |
+| **Chart.js** | Dashboard charts |
+| **OpenAI GPT-4o-mini** | AI control mapping |
+| **Pandas** | Data manipulation |
+| **ReportLab** | PDF generation |
+
+---
+
+## 🔧 Frameworks Supported
 
 - **SOC 2**: Common Criteria (CC) controls
 - **ISO 27001**: Annex A controls
 
-## Technologies Used
+---
 
-- **Typer**: Modern CLI framework
-- **Rich**: Beautiful terminal formatting
-- **OpenAI**: GPT-4o-mini for intelligent mapping
-- **Pandas**: Data manipulation
-- **Python Dataclasses**: Clean data structures
+## 📄 License
 
-## License
+MIT License - feel free to use for personal and commercial projects.
 
-MIT
+---
 
-## Author
+## 👩‍💻 Author
 
-Jahnavi Saxena
+**Jahnavi Saxena**
+
+
+---
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit changes (`git commit -m 'Add amazing feature'`)
+4. Push to branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request

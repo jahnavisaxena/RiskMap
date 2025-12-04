@@ -15,6 +15,13 @@ class Risk:
     impact: int
     score: int = 0
     controls: List[str] = field(default_factory=list)
+    
+    # Risk Treatment & Remediation fields
+    treatment: str = "Mitigate"  # Accept, Mitigate, Transfer, Avoid
+    action_items: str = ""
+    owner: str = ""
+    due_date: Optional[str] = None  # ISO format: YYYY-MM-DD
+    status: str = "Open"  # Open, In Progress, Mitigated, Closed
 
 class RiskManager:
     def __init__(self):

@@ -6,6 +6,7 @@ from riskmap.risk_manager import RiskManager
 from riskmap.risk_scoring import calculate_score
 from riskmap.control_mapper import ControlMapper
 from riskmap.register_exporter import export_to_csv, export_to_json
+from riskmap.pdf_exporter import export_to_pdf
 import riskmap.risk_manager
 
 # Setup temporary data directory for tests
@@ -69,6 +70,19 @@ class TestCore(unittest.TestCase):
         export_to_json(self.rm.list_risks(), json_file)
         self.assertTrue(os.path.exists(json_file))
         os.remove(json_file)
+
+    def test_pdf_export(self):
+        self.rm.add_risk("PDF Export Risk", "Test PDF generation", 3, 4)
+        
+        pdf_file = "test_export.pdf"
+        
+        export_to_pdf(self.rm.list_risks(), pdf_file)
+        self.assertTrue(os.path.exists(pdf_file))
+        
+        # Check file has content (PDF should be more than just empty)
+        self.assertGreater(os.path.getsize(pdf_file), 1000)
+        
+        os.remove(pdf_file)
 
 if __name__ == '__main__':
     unittest.main()

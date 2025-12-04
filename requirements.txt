@@ -2,3 +2,6 @@ typer
 rich
 pandas
 openai
+reportlab
+flask
+flask-cors

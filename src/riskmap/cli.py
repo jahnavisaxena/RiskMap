@@ -6,6 +6,7 @@ from .risk_manager import RiskManager
 from .risk_scoring import calculate_score
 from .control_mapper import ControlMapper
 from .register_exporter import export_to_csv, export_to_json
+from .pdf_exporter import export_to_pdf
 
 app = typer.Typer(help="📘 RiskMap - SOC 2 Risk & Control Mapping Tool")
 console = Console()
@@ -116,10 +117,10 @@ def map_controls(
 # ---------------------------
 @app.command()
 def export(
-    format: str = typer.Option("csv", "--format", "-f", help="Export format: csv | json")
+    format: str = typer.Option("csv", "--format", "-f", help="Export format: csv | json | pdf")
 ):
     """
-    Export the entire risk register in CSV or JSON format.
+    Export the entire risk register in CSV, JSON, or PDF format.
     """
     risks = risk_manager.list_risks()
     if not risks:
@@ -131,6 +132,8 @@ def export(
         export_to_csv(risks, filename)
     elif format.lower() == "json":
         export_to_json(risks, filename)
+    elif format.lower() == "pdf":
+        export_to_pdf(risks, filename)
     else:
         print(f"[red]Unsupported format: {format}[/red]")
         return
