@@ -57,6 +57,24 @@ python app.py
 # Visit http://localhost:5000
 ```
 
+### Option 3: Kali Linux / Ubuntu (Virtual Environment)
+
+```bash
+# Clone the repository
+git clone https://github.com/jahnavisaxena/RiskMap.git
+cd RiskMap
+
+# Create and activate virtual environment
+python3 -m venv venv
+source venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run Web Dashboard
+python app.py
+```
+
 ---
 
 ## 🖥️ CLI Usage

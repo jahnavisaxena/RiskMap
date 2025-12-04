@@ -6,6 +6,9 @@ from pathlib import Path
 DATA_DIR = Path(__file__).parent.parent / "data"
 RISKS_FILE = DATA_DIR / "risks.json"
 
+# Ensure data directory exists
+DATA_DIR.mkdir(parents=True, exist_ok=True)
+
 @dataclass
 class Risk:
     id: int
@@ -40,6 +43,7 @@ class RiskManager:
             self.risks = []
 
     def _save_risks(self):
+        DATA_DIR.mkdir(parents=True, exist_ok=True)
         with open(RISKS_FILE, "w") as f:
             json.dump([asdict(r) for r in self.risks], f, indent=2)
 
