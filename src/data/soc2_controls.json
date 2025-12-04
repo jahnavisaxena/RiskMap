@@ -1,0 +1,22 @@
+[
+  {
+    "id": "CC6.1",
+    "description": "The entity implements logical access security software, infrastructure, and architectures over protected information assets to protect them from security events to meet the entity's objectives.",
+    "keywords": ["access", "security", "logical", "auth", "login"]
+  },
+  {
+    "id": "CC6.6",
+    "description": "The entity implements logical access security measures to protect against threats from sources outside its system boundaries.",
+    "keywords": ["firewall", "network", "external", "threat", "ddos"]
+  },
+  {
+    "id": "CC7.1",
+    "description": "To meet its objectives, the entity uses detection and monitoring procedures to identify (1) changes to configurations that result in the introduction of new vulnerabilities, and (2) susceptibilities to newly discovered vulnerabilities.",
+    "keywords": ["monitor", "detect", "vulnerability", "scan", "patch"]
+  },
+  {
+    "id": "CC8.1",
+    "description": "The entity authorizes, designs, develops or acquires, configures, documents, tests, approves, and implements changes to infrastructure, data, software, and procedures to meet its objectives.",
+    "keywords": ["change", "deploy", "test", "approve", "sdlc"]
+  }
+]
