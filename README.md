@@ -99,6 +99,16 @@ riskmap add "Data Breach" --likelihood 4 --impact 5
 riskmap add "SQL Injection" --desc "Web app vulnerable" --likelihood 5 --impact 5 --framework iso27001
 ```
 
+### Add a Risk (HIPAA)
+```bash
+riskmap add "Unencrypted Patient Data" --likelihood 5 --impact 5 --framework hipaa
+```
+
+### Add a Risk (NIST CSF)
+```bash
+riskmap add "Lack of Incident Response Plan" --likelihood 4 --impact 4 --framework nist
+```
+
 ### Enable AI-Powered Mapping
 
 Set your OpenAI API key:
@@ -180,6 +190,10 @@ RiskMap/
 
 - **SOC 2**: Common Criteria (CC) controls
 - **ISO 27001**: Annex A controls
+- **HIPAA**: Security Rule safeguards
+- **PCI-DSS v4.0**: Payment card industry standards
+- **GDPR**: Data protection & privacy articles
+- **NIST CSF**: Identify, Protect, Detect, Respond, Recover
 
 ---
 
