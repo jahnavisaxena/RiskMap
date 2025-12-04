@@ -1,0 +1,223 @@
+[
+    {
+        "id": "ID.AM",
+        "description": "Asset Management - The data, personnel, devices, systems, and facilities are identified and managed.",
+        "keywords": [
+            "asset",
+            "inventory",
+            "management",
+            "hardware",
+            "software",
+            "data"
+        ]
+    },
+    {
+        "id": "ID.BE",
+        "description": "Business Environment - The organization's mission, objectives, stakeholders, and activities are understood.",
+        "keywords": [
+            "business",
+            "mission",
+            "objective",
+            "stakeholder",
+            "critical"
+        ]
+    },
+    {
+        "id": "ID.GV",
+        "description": "Governance - Policies, procedures, and processes to manage and monitor regulatory, legal, risk, environmental requirements.",
+        "keywords": [
+            "governance",
+            "policy",
+            "procedure",
+            "compliance",
+            "regulatory"
+        ]
+    },
+    {
+        "id": "ID.RA",
+        "description": "Risk Assessment - The organization understands the cybersecurity risk to operations, assets, and individuals.",
+        "keywords": [
+            "risk",
+            "assessment",
+            "threat",
+            "vulnerability",
+            "impact"
+        ]
+    },
+    {
+        "id": "ID.RM",
+        "description": "Risk Management Strategy - Organization's priorities, constraints, risk tolerances are established.",
+        "keywords": [
+            "risk",
+            "management",
+            "strategy",
+            "tolerance",
+            "appetite"
+        ]
+    },
+    {
+        "id": "PR.AC",
+        "description": "Identity Management and Access Control - Access to assets is limited to authorized users, processes, and devices.",
+        "keywords": [
+            "access",
+            "identity",
+            "authentication",
+            "authorization",
+            "mfa"
+        ]
+    },
+    {
+        "id": "PR.AT",
+        "description": "Awareness and Training - Organization's personnel are provided cybersecurity awareness education.",
+        "keywords": [
+            "training",
+            "awareness",
+            "education",
+            "phishing",
+            "security"
+        ]
+    },
+    {
+        "id": "PR.DS",
+        "description": "Data Security - Information and records are managed consistent with risk strategy to protect confidentiality, integrity.",
+        "keywords": [
+            "data",
+            "encryption",
+            "integrity",
+            "confidentiality",
+            "protection"
+        ]
+    },
+    {
+        "id": "PR.IP",
+        "description": "Information Protection Processes - Security policies, processes, and procedures are maintained.",
+        "keywords": [
+            "policy",
+            "procedure",
+            "baseline",
+            "configuration",
+            "change"
+        ]
+    },
+    {
+        "id": "PR.MA",
+        "description": "Maintenance - Maintenance and repairs of industrial control and information system components are performed.",
+        "keywords": [
+            "maintenance",
+            "repair",
+            "update",
+            "patch",
+            "remote"
+        ]
+    },
+    {
+        "id": "PR.PT",
+        "description": "Protective Technology - Technical security solutions are managed to ensure security and resilience.",
+        "keywords": [
+            "technology",
+            "firewall",
+            "ids",
+            "ips",
+            "endpoint"
+        ]
+    },
+    {
+        "id": "DE.AE",
+        "description": "Anomalies and Events - Anomalous activity is detected and the potential impact is understood.",
+        "keywords": [
+            "anomaly",
+            "detection",
+            "event",
+            "alert",
+            "baseline"
+        ]
+    },
+    {
+        "id": "DE.CM",
+        "description": "Security Continuous Monitoring - Information system and assets are monitored to identify cybersecurity events.",
+        "keywords": [
+            "monitor",
+            "siem",
+            "logging",
+            "continuous",
+            "detection"
+        ]
+    },
+    {
+        "id": "DE.DP",
+        "description": "Detection Processes - Detection processes and procedures are maintained and tested.",
+        "keywords": [
+            "detection",
+            "process",
+            "test",
+            "procedure",
+            "validate"
+        ]
+    },
+    {
+        "id": "RS.RP",
+        "description": "Response Planning - Response processes and procedures are executed and maintained.",
+        "keywords": [
+            "response",
+            "incident",
+            "plan",
+            "procedure",
+            "playbook"
+        ]
+    },
+    {
+        "id": "RS.CO",
+        "description": "Communications - Response activities are coordinated with internal and external stakeholders.",
+        "keywords": [
+            "communication",
+            "stakeholder",
+            "notification",
+            "coordination",
+            "reporting"
+        ]
+    },
+    {
+        "id": "RS.AN",
+        "description": "Analysis - Analysis is conducted to ensure effective response and support recovery activities.",
+        "keywords": [
+            "analysis",
+            "forensics",
+            "investigation",
+            "root cause",
+            "impact"
+        ]
+    },
+    {
+        "id": "RS.MI",
+        "description": "Mitigation - Activities are performed to prevent expansion of an event and mitigate its effects.",
+        "keywords": [
+            "mitigation",
+            "containment",
+            "eradication",
+            "isolation",
+            "remediation"
+        ]
+    },
+    {
+        "id": "RC.RP",
+        "description": "Recovery Planning - Recovery processes and procedures are executed and maintained.",
+        "keywords": [
+            "recovery",
+            "backup",
+            "restore",
+            "disaster",
+            "continuity"
+        ]
+    },
+    {
+        "id": "RC.IM",
+        "description": "Improvements - Recovery planning and processes are improved by incorporating lessons learned.",
+        "keywords": [
+            "improvement",
+            "lessons",
+            "learned",
+            "update",
+            "enhance"
+        ]
+    }
+]

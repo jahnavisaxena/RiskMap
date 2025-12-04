@@ -1,0 +1,135 @@
+[
+    {
+        "id": "164.308(a)(1)",
+        "description": "Security Management Process - Implement policies and procedures to prevent, detect, contain, and correct security violations.",
+        "keywords": [
+            "policy",
+            "security",
+            "management",
+            "violation",
+            "incident"
+        ]
+    },
+    {
+        "id": "164.308(a)(3)",
+        "description": "Workforce Security - Implement policies and procedures to ensure that all members of its workforce have appropriate access to ePHI.",
+        "keywords": [
+            "workforce",
+            "access",
+            "employee",
+            "authorization",
+            "clearance"
+        ]
+    },
+    {
+        "id": "164.308(a)(4)",
+        "description": "Information Access Management - Implement policies and procedures for authorizing access to ePHI.",
+        "keywords": [
+            "access",
+            "authorization",
+            "permission",
+            "role",
+            "privilege"
+        ]
+    },
+    {
+        "id": "164.308(a)(5)",
+        "description": "Security Awareness and Training - Implement a security awareness and training program for all members of its workforce.",
+        "keywords": [
+            "training",
+            "awareness",
+            "education",
+            "phishing",
+            "security"
+        ]
+    },
+    {
+        "id": "164.308(a)(6)",
+        "description": "Security Incident Procedures - Implement policies and procedures to address security incidents.",
+        "keywords": [
+            "incident",
+            "response",
+            "breach",
+            "notification",
+            "forensics"
+        ]
+    },
+    {
+        "id": "164.310(a)(1)",
+        "description": "Facility Access Controls - Implement policies and procedures to limit physical access to electronic information systems.",
+        "keywords": [
+            "physical",
+            "facility",
+            "access",
+            "datacenter",
+            "server"
+        ]
+    },
+    {
+        "id": "164.310(d)(1)",
+        "description": "Device and Media Controls - Implement policies and procedures that govern the receipt and removal of hardware and electronic media.",
+        "keywords": [
+            "device",
+            "media",
+            "disposal",
+            "encryption",
+            "hardware"
+        ]
+    },
+    {
+        "id": "164.312(a)(1)",
+        "description": "Access Control - Implement technical policies and procedures for electronic information systems that maintain ePHI.",
+        "keywords": [
+            "access",
+            "control",
+            "authentication",
+            "login",
+            "password"
+        ]
+    },
+    {
+        "id": "164.312(b)",
+        "description": "Audit Controls - Implement hardware, software, and/or procedural mechanisms that record and examine activity in information systems.",
+        "keywords": [
+            "audit",
+            "log",
+            "monitor",
+            "track",
+            "activity"
+        ]
+    },
+    {
+        "id": "164.312(c)(1)",
+        "description": "Integrity - Implement policies and procedures to protect ePHI from improper alteration or destruction.",
+        "keywords": [
+            "integrity",
+            "data",
+            "modification",
+            "tampering",
+            "checksum"
+        ]
+    },
+    {
+        "id": "164.312(d)",
+        "description": "Person or Entity Authentication - Implement procedures to verify that a person or entity seeking access to ePHI is the one claimed.",
+        "keywords": [
+            "authentication",
+            "identity",
+            "verification",
+            "mfa",
+            "biometric"
+        ]
+    },
+    {
+        "id": "164.312(e)(1)",
+        "description": "Transmission Security - Implement technical security measures to guard against unauthorized access to ePHI transmitted over network.",
+        "keywords": [
+            "encryption",
+            "transmission",
+            "network",
+            "ssl",
+            "tls",
+            "vpn"
+        ]
+    }
+]

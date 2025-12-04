@@ -8,7 +8,7 @@ from .control_mapper import ControlMapper
 from .register_exporter import export_to_csv, export_to_json
 from .pdf_exporter import export_to_pdf
 
-app = typer.Typer(help="📘 RiskMap - SOC 2 Risk & Control Mapping Tool")
+app = typer.Typer(help="📘 RiskMap - Multi-Framework GRC Risk & Control Mapping Tool")
 console = Console()
 risk_manager = RiskManager()
 control_mapper = ControlMapper()
@@ -22,7 +22,7 @@ def add(
     description: str = typer.Option("", "--desc", help="Risk description"),
     likelihood: int = typer.Option(..., "--likelihood", "-l", help="Likelihood (1-5)"),
     impact: int = typer.Option(..., "--impact", "-i", help="Impact (1-5)"),
-    framework: str = typer.Option("soc2", "--framework", help="Compliance Framework (soc2 | iso27001)")
+    framework: str = typer.Option("soc2", "--framework", help="Compliance Framework (soc2 | iso27001 | hipaa | pcidss | gdpr | nist)")
 ):
     """
     Add a new risk to the risk register.
@@ -95,7 +95,7 @@ def score(risk_id: int):
 @app.command("map-controls")
 def map_controls(
     risk_id: int,
-    framework: str = typer.Option("soc2", "--framework", help="Compliance Framework (soc2 | iso27001)")
+    framework: str = typer.Option("soc2", "--framework", help="Compliance Framework (soc2 | iso27001 | hipaa | pcidss | gdpr | nist)")
 ):
     """
     Map controls to a given risk.
