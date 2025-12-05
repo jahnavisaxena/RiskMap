@@ -27,7 +27,7 @@ def add(
     """
     Add a new risk to the risk register.
     """
-    risk = risk_manager.add_risk(name, description, likelihood, impact)
+    risk = risk_manager.add_risk(name, description, likelihood, impact, framework)
     
     # Auto-calculate score
     risk.score = calculate_score(risk.likelihood, risk.impact)

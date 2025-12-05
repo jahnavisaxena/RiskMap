@@ -42,7 +42,8 @@ def get_risks():
         'action_items': r.action_items,
         'owner': r.owner,
         'due_date': r.due_date,
-        'status': r.status
+        'status': r.status,
+        'framework': r.framework
     } for r in risks])
 
 
@@ -65,7 +66,8 @@ def get_risk(risk_id):
         'action_items': risk.action_items,
         'owner': risk.owner,
         'due_date': risk.due_date,
-        'status': risk.status
+        'status': risk.status,
+        'framework': risk.framework
     })
 
 
@@ -85,12 +87,12 @@ def add_risk():
         return jsonify({'error': 'Likelihood and impact must be between 1 and 5'}), 400
     
     # Add risk
-    risk = risk_manager.add_risk(
         name=data['name'],
         description=data.get('description', ''),
         likelihood=likelihood,
-        impact=impact
-    )
+        impact=impact,
+        framework=data.get('framework', 'soc2')
+    
     
     # Calculate score
     risk.score = calculate_score(risk.likelihood, risk.impact)
@@ -113,7 +115,8 @@ def add_risk():
         'action_items': risk.action_items,
         'owner': risk.owner,
         'due_date': risk.due_date,
-        'status': risk.status
+        'status': risk.status,
+        'framework': risk.framework
     }), 201
 
 
@@ -147,6 +150,8 @@ def update_risk(risk_id):
         risk.due_date = data['due_date']
     if 'status' in data:
         risk.status = data['status']
+    if 'framework' in data:
+        risk.framework = data['framework']
     
     # Recalculate score
     risk.score = calculate_score(risk.likelihood, risk.impact)
@@ -170,7 +175,8 @@ def update_risk(risk_id):
         'action_items': risk.action_items,
         'owner': risk.owner,
         'due_date': risk.due_date,
-        'status': risk.status
+        'status': risk.status,
+        'framework': risk.framework
     })
 
 
@@ -219,6 +225,7 @@ def get_stats():
         'low': 0,
         'by_status': {},
         'by_owner': {},
+        'by_framework': {},
         'top_risks': []
     }
     
@@ -251,6 +258,10 @@ def get_stats():
         # Owner counts
         owner = risk.owner or "Unassigned"
         stats['by_owner'][owner] = stats['by_owner'].get(owner, 0) + 1
+
+        # Framework counts
+        framework = risk.framework or "soc2"
+        stats['by_framework'][framework] = stats['by_framework'].get(framework, 0) + 1
     
     return jsonify(stats)
 

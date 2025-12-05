@@ -15,6 +15,7 @@ async function loadRisks() {
     try {
         const response = await fetch(`${API_URL}/risks`);
         const risks = await response.json();
+        allRisks = risks; // Store for filtering
 
         displayRisks(risks);
         renderHeatMap(risks);
@@ -28,7 +29,7 @@ function displayRisks(risks) {
     const tbody = document.getElementById('risk-table-body');
 
     if (risks.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="8" class="no-data">No risks found. Click "Add Risk" to get started.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="9" class="no-data">No risks found. Click "Add Risk" to get started.</td></tr>';
         return;
     }
 
@@ -41,6 +42,7 @@ function displayRisks(risks) {
             <tr>
                 <td>${risk.id}</td>
                 <td><strong>${risk.name}</strong><br><small style="color: #6C757D;">${risk.description || 'N/A'}</small></td>
+                <td><span class="badge badge-framework">${risk.framework ? risk.framework.toUpperCase() : 'SOC2'}</span></td>
                 <td style="text-align: center;">${risk.likelihood}</td>
                 <td style="text-align: center;">${risk.impact}</td>
                 <td style="text-align: center;"><strong>${risk.score}</strong></td>
@@ -138,6 +140,65 @@ function renderCharts(stats) {
             }
         }
     });
+
+    // 3. Framework Chart (Polar Area)
+    const frameworkCtx = document.getElementById('frameworkChart').getContext('2d');
+    const frameworkLabels = Object.keys(stats.by_framework || {});
+    const frameworkData = Object.values(stats.by_framework || {});
+
+    if (window.frameworkChartInstance) window.frameworkChartInstance.destroy();
+
+    window.frameworkChartInstance = new Chart(frameworkCtx, {
+        type: 'polarArea',
+        data: {
+            labels: frameworkLabels,
+            datasets: [{
+                data: frameworkData,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.7)',
+                    'rgba(54, 162, 235, 0.7)',
+                    'rgba(255, 206, 86, 0.7)',
+                    'rgba(75, 192, 192, 0.7)',
+                    'rgba(153, 102, 255, 0.7)',
+                    'rgba(255, 159, 64, 0.7)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'right' }
+            },
+            scales: {
+                r: { ticks: { display: false } }
+            }
+        }
+    });
+}
+
+// Global risks array for filtering
+let allRisks = [];
+
+// ========== Filter Risks ==========
+function filterRisks(framework) {
+    // Update active tab
+    document.querySelectorAll('.filter-tab').forEach(tab => {
+        if (tab.dataset.framework === framework) {
+            tab.classList.add('active');
+        } else {
+            tab.classList.remove('active');
+        }
+    });
+
+    // Filter data
+    if (framework === 'all') {
+        displayRisks(allRisks);
+    } else {
+        const filtered = allRisks.filter(r => (r.framework || 'soc2') === framework);
+        displayRisks(filtered);
+    }
 }
 
 function renderTopRisks(risks) {
@@ -198,6 +259,7 @@ async function editRisk(riskId) {
         document.getElementById('risk-id').value = risk.id;
         document.getElementById('risk-name').value = risk.name;
         document.getElementById('risk-description').value = risk.description || '';
+        document.getElementById('risk-framework').value = risk.framework || 'soc2';
         document.getElementById('risk-likelihood').value = risk.likelihood;
         document.getElementById('risk-impact').value = risk.impact;
         document.getElementById('risk-treatment').value = risk.treatment || 'Mitigate';

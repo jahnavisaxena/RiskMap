@@ -875,6 +875,7 @@ textarea {
         grid-template-columns: 1fr;
     }
 }
+
 /* ========== Theme Toggle Button ========== */
 .theme-toggle {
     background: rgba(255, 255, 255, 0.2);
@@ -1005,4 +1006,20 @@ body.dark-mode .header-badge {
 body,
 body *:not(.theme-icon-light):not(.theme-icon-dark) {
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Framework Badge */
+.badge-framework {
+    background-color: #e9ecef;
+    color: #495057;
+    padding: 0.25em 0.6em;
+    font-size: 0.75em;
+    font-weight: 700;
+    border-radius: 0.25rem;
+    display: inline-block;
+}
+
+body.dark-mode .badge-framework {
+    background-color: #2a2a4a;
+    color: #a0a0a0;
 }

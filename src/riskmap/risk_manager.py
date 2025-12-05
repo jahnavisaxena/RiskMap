@@ -25,6 +25,7 @@ class Risk:
     owner: str = ""
     due_date: Optional[str] = None  # ISO format: YYYY-MM-DD
     status: str = "Open"  # Open, In Progress, Mitigated, Closed
+    framework: str = "soc2"  # soc2, iso27001, hipaa, etc.
 
 class RiskManager:
     def __init__(self):
@@ -47,7 +48,7 @@ class RiskManager:
         with open(RISKS_FILE, "w") as f:
             json.dump([asdict(r) for r in self.risks], f, indent=2)
 
-    def add_risk(self, name: str, description: str, likelihood: int, impact: int) -> Risk:
+    def add_risk(self, name: str, description: str, likelihood: int, impact: int, framework: str = "soc2") -> Risk:
         new_id = 1
         if self.risks:
             new_id = max(r.id for r in self.risks) + 1
@@ -57,7 +58,8 @@ class RiskManager:
             name=name,
             description=description,
             likelihood=likelihood,
-            impact=impact
+            impact=impact,
+            framework=framework
         )
         self.risks.append(risk)
         self._save_risks()
