@@ -6,7 +6,7 @@
 
 A powerful Governance, Risk, and Compliance (GRC) tool featuring both a **CLI** for command-line operations and a **Web Dashboard** for visual risk management.
 
-![RiskMap Dashboard](docs/screenshot.png)
+![RiskMap Dashboard](Screenshot.png)
 
 ## 🚀 Features
 
