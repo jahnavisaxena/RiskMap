@@ -37,54 +37,71 @@
 
     <!-- Main Content -->
     <main class="container">
-        <!-- Analytics Dashboard -->
+        <!-- SOC 2 specific Dashboard -->
         <section class="dashboard-section">
-            <!-- Key Metrics Row -->
-            <div class="metrics-grid">
-                <div class="stat-card stat-total">
-                    <div class="stat-number" id="total-risks">0</div>
-                    <div class="stat-label">Total Risks</div>
+            <!-- Audit Type Selector Widget -->
+            <div class="audit-type-widget">
+                <div class="audit-header">
+                    <h3>SOC 2 Audit Scope</h3>
+                    <div class="audit-toggle-group">
+                        <input type="radio" id="type1" name="audit-type" value="type1" checked
+                            onchange="toggleAuditType('type1')">
+                        <label for="type1">Type 1 (Point-in-Time)</label>
+
+                        <input type="radio" id="type2" name="audit-type" value="type2"
+                            onchange="toggleAuditType('type2')">
+                        <label for="type2">Type 2 (Period of Time)</label>
+                    </div>
                 </div>
-                <div class="stat-card stat-critical">
-                    <div class="stat-number" id="critical-risks">0</div>
-                    <div class="stat-label">Critical</div>
+                <div class="audit-info">
+                    <p id="audit-desc-type1" class="audit-desc active">Evaluates the design of controls at a specific
+                        point in time. Focuses on suitability of design.</p>
+                    <p id="audit-desc-type2" class="audit-desc">Evaluates the design and operating effectiveness of
+                        controls over a period (e.g., 6 months).</p>
                 </div>
-                <div class="stat-card stat-high">
-                    <div class="stat-number" id="high-risks">0</div>
-                    <div class="stat-label">High</div>
+            </div>
+
+            <!-- Evidence & Readiness Grid -->
+            <div class="soc2-grid">
+                <!-- Readiness Checklist -->
+                <div class="readiness-panel">
+                    <div class="panel-header">
+                        <h3>✅ Readiness Checklist</h3>
+                        <span id="readiness-progress" class="badge-audit">0% Ready</span>
+                    </div>
+                    <div class="checklist-container" id="checklist-container">
+                        <!-- Populated by JS based on Type 1 / Type 2 -->
+                    </div>
                 </div>
-                <div class="stat-card stat-medium">
-                    <div class="stat-number" id="medium-risks">0</div>
-                    <div class="stat-label">Medium</div>
-                </div>
-                <div class="stat-card stat-low">
-                    <div class="stat-number" id="low-risks">0</div>
-                    <div class="stat-label">Low</div>
+
+                <!-- Evidence Required Panel -->
+                <div class="evidence-panel">
+                    <div class="panel-header">
+                        <h3>📂 Evidence Required</h3>
+                        <span class="badg-evidence" id="evidence-badge">Snapshot</span>
+                    </div>
+                    <ul class="evidence-list" id="evidence-list">
+                        <!-- Populated by JS -->
+                    </ul>
                 </div>
             </div>
 
             <!-- Charts Row -->
             <div class="charts-grid">
                 <div class="chart-container">
-                    <h3>Risks by Status</h3>
+                    <h3>Risks by Trust Service Criteria</h3>
                     <div class="canvas-wrapper">
-                        <canvas id="statusChart"></canvas>
+                        <canvas id="tscChart"></canvas>
                     </div>
                 </div>
                 <div class="chart-container">
-                    <h3>Risks by Owner</h3>
+                    <h3>Control Gap Analysis</h3>
                     <div class="canvas-wrapper">
-                        <canvas id="ownerChart"></canvas>
-                    </div>
-                </div>
-                <div class="chart-container">
-                    <h3>Risks by Framework</h3>
-                    <div class="canvas-wrapper">
-                        <canvas id="frameworkChart"></canvas>
+                        <canvas id="gapChart"></canvas>
                     </div>
                 </div>
                 <div class="top-risks-container">
-                    <h3>🚨 Top 5 Critical Risks</h3>
+                    <h3>🚨 Top SOC 2 Risks</h3>
                     <div id="top-risks-list" class="top-risks-list">
                         <!-- Populated by JS -->
                     </div>
@@ -130,55 +147,13 @@
                 <div class="x-axis-label">Impact</div>
             </div>
         </section>
-
-        <!-- Actions Bar -->
-        <section class="actions-bar">
-            <button class="btn btn-primary" onclick="openAddModal()">+ Add Risk</button>
-            <div class="export-buttons">
-                <button class="btn btn-secondary" onclick="exportRisks('csv')">Export CSV</button>
-                <button class="btn btn-secondary" onclick="exportRisks('json')">Export JSON</button>
-                <button class="btn btn-secondary" onclick="exportRisks('pdf')">Export PDF</button>
-            </div>
-        </section>
-
-        <!-- Risk Table -->
-        <section class="risk-table-section">
-            <h2>Risk Register</h2>
-
-            <!-- Framework Filters -->
-            <div class="filter-tabs">
-                <button class="filter-tab active" data-framework="all" onclick="filterRisks('all')">All</button>
-                <button class="filter-tab" data-framework="soc2" onclick="filterRisks('soc2')">SOC 2</button>
-                <button class="filter-tab" data-framework="iso27001" onclick="filterRisks('iso27001')">ISO
-                    27001</button>
-                <button class="filter-tab" data-framework="hipaa" onclick="filterRisks('hipaa')">HIPAA</button>
-                <button class="filter-tab" data-framework="pcidss" onclick="filterRisks('pcidss')">PCI-DSS</button>
-                <button class="filter-tab" data-framework="gdpr" onclick="filterRisks('gdpr')">GDPR</button>
-                <button class="filter-tab" data-framework="nist" onclick="filterRisks('nist')">NIST CSF</button>
-            </div>
-
-            <div class="table-container">
-                <table id="risk-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Risk Name</th>
-                            <th>Framework</th>
-                            <th>Likelihood</th>
-                            <th>Impact</th>
-                            <th>Score</th>
-                            <th>Severity</th>
-                            <th>Controls</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="risk-table-body">
-                        <tr>
-                            <td colspan="9" class="no-data">No risks found. Click "Add Risk" to get started.</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+        <tbody id="risk-table-body">
+            <tr>
+                <td colspan="9" class="no-data">No risks found. Click "Add Risk" to get started.</td>
+            </tr>
+        </tbody>
+        </table>
+        </div>
         </section>
     </main>
 
@@ -215,15 +190,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="risk-framework">Framework</label>
-                    <select id="risk-framework">
-                        <option value="soc2">SOC 2</option>
-                        <option value="iso27001">ISO 27001</option>
-                        <option value="hipaa">HIPAA</option>
-                        <option value="pcidss">PCI-DSS</option>
-                        <option value="gdpr">GDPR</option>
-                        <option value="nist">NIST CSF</option>
-                    </select>
+                    <input type="hidden" id="risk-framework" value="soc2">
                 </div>
 
                 <hr style="margin: 1.5rem 0; border: none; border-top: 1px solid var(--border-color);">

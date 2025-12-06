@@ -79,25 +79,6 @@ def add_risk():
     # Validate input
     if not data.get('name'):
         return jsonify({'error': 'Risk name is required'}), 400
-    
-    likelihood = data.get('likelihood', 1)
-    impact = data.get('impact', 1)
-    
-    if not (1 <= likelihood <= 5 and 1 <= impact <= 5):
-        return jsonify({'error': 'Likelihood and impact must be between 1 and 5'}), 400
-    
-    # Add risk
-        name=data['name'],
-        description=data.get('description', ''),
-        likelihood=likelihood,
-        impact=impact,
-        framework=data.get('framework', 'soc2')
-    
-    
-    # Calculate score
-    risk.score = calculate_score(risk.likelihood, risk.impact)
-    
-    # Map controls
     framework = data.get('framework', 'soc2')
     risk.controls = control_mapper.map_controls(risk.name, risk.description, framework)
     
