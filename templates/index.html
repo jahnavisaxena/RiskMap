@@ -41,7 +41,14 @@
     <!-- Main Content -->
     <main class="container">
         <!-- SOC 2 specific Dashboard -->
-        <section class="dashboard-section">
+        <!-- Tabs Navigation -->
+        <div class="tabs-nav">
+            <button class="tab-btn active" onclick="switchTab('overview')">Overview</button>
+            <button class="tab-btn" onclick="switchTab('scanners')">Security Scanning</button>
+        </div>
+
+        <!-- SOC 2 specific Dashboard -->
+        <section id="view-overview" class="dashboard-section">
             <!-- Key Metrics Grid -->
             <div class="metrics-grid">
                 <div class="stat-card stat-total">
@@ -169,7 +176,126 @@
             </div>
         </section>
 
-        <!-- Risk Heat Map -->
+        <!-- Scanners View -->
+        <section id="view-scanners" class="dashboard-section" style="display: none;">
+            <div class="scanners-grid">
+                <!-- 1. Vulnerability Scanner Card -->
+                <div class="scanner-card">
+                    <div class="scanner-header">
+                        <div class="scanner-icon">🛡️</div>
+                        <div class="scanner-info">
+                            <h3>Vulnerability Scanner</h3>
+                            <span class="scanner-status status-good">Active</span>
+                        </div>
+                    </div>
+                    <div class="scanner-body">
+                        <div class="canvas-wrapper-small">
+                            <canvas id="vulnScannerChart"></canvas>
+                        </div>
+                        <div class="scanner-metrics">
+                            <div class="metric-item">
+                                <span class="metric-val" id="cnt-vuln-high">0</span>
+                                <span class="metric-label">High Risks</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-val" id="cnt-vuln-total">0</span>
+                                <span class="metric-label">Total</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="scanner-footer">
+                        <span>Mapped to: <strong>CC7.1, CC7.2</strong></span>
+                    </div>
+                </div>
+
+                <!-- 2. Cloud Config Scanner Card -->
+                <div class="scanner-card">
+                    <div class="scanner-header">
+                        <div class="scanner-icon">☁️</div>
+                        <div class="scanner-info">
+                            <h3>Cloud Config Scanner</h3>
+                            <span class="scanner-status status-good">Active</span>
+                        </div>
+                    </div>
+                    <div class="scanner-body">
+                        <div class="canvas-wrapper-small">
+                            <canvas id="cloudScannerChart"></canvas>
+                        </div>
+                        <div class="scanner-metrics">
+                            <div class="metric-item">
+                                <span class="metric-val" id="cnt-cloud-high">0</span>
+                                <span class="metric-label">High Risks</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-val" id="cnt-cloud-total">0</span>
+                                <span class="metric-label">Total</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="scanner-footer">
+                        <span>Mapped to: <strong>CC6.1, CC6.8</strong></span>
+                    </div>
+                </div>
+
+                <!-- 3. Dependency Scanner Card -->
+                <div class="scanner-card">
+                    <div class="scanner-header">
+                        <div class="scanner-icon">📦</div>
+                        <div class="scanner-info">
+                            <h3>Dependency Scanner</h3>
+                            <span class="scanner-status status-warning">Check Required</span>
+                        </div>
+                    </div>
+                    <div class="scanner-body">
+                        <div class="canvas-wrapper-small">
+                            <canvas id="depScannerChart"></canvas>
+                        </div>
+                        <div class="scanner-metrics">
+                            <div class="metric-item">
+                                <span class="metric-val" id="cnt-dep-high">0</span>
+                                <span class="metric-label">High Risks</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-val" id="cnt-dep-total">0</span>
+                                <span class="metric-label">Total</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="scanner-footer">
+                        <span>Mapped to: <strong>CC8.1</strong></span>
+                    </div>
+                </div>
+
+                <!-- 4. Attack Surface Scanner Card -->
+                <div class="scanner-card">
+                    <div class="scanner-header">
+                        <div class="scanner-icon">🌐</div>
+                        <div class="scanner-info">
+                            <h3>Attack Surface Scanner</h3>
+                            <span class="scanner-status status-good">Active</span>
+                        </div>
+                    </div>
+                    <div class="scanner-body">
+                        <div class="canvas-wrapper-small">
+                            <canvas id="attackScannerChart"></canvas>
+                        </div>
+                        <div class="scanner-metrics">
+                            <div class="metric-item">
+                                <span class="metric-val" id="cnt-attack-high">0</span>
+                                <span class="metric-label">High Risks</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-val" id="cnt-attack-total">0</span>
+                                <span class="metric-label">Total</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="scanner-footer">
+                        <span>Mapped to: <strong>CC7.2, C1.2</strong></span>
+                    </div>
+                </div>
+            </div>
+        </section>
 
         <section class="risk-register-section">
             <div class="section-header">

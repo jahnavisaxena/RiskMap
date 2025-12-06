@@ -43,7 +43,8 @@ def get_risks():
         'owner': r.owner,
         'due_date': r.due_date,
         'status': r.status,
-        'framework': r.framework
+        'framework': r.framework,
+        'scanner_type': r.scanner_type
     } for r in risks])
 
 
@@ -94,6 +95,8 @@ def add_risk():
         impact=impact,
         framework=data.get('framework', 'soc2')
     )
+    # Add scanner type
+    risk.scanner_type = data.get('scanner_type', 'Manual')
     
     # Calculate score
     risk.score = calculate_score(risk.likelihood, risk.impact)
@@ -116,7 +119,8 @@ def add_risk():
         'owner': risk.owner,
         'due_date': risk.due_date,
         'status': risk.status,
-        'framework': risk.framework
+        'framework': risk.framework,
+        'scanner_type': risk.scanner_type
     }), 201
 
 
@@ -152,6 +156,8 @@ def update_risk(risk_id):
         risk.status = data['status']
     if 'framework' in data:
         risk.framework = data['framework']
+    if 'scanner_type' in data:
+        risk.scanner_type = data['scanner_type']
     
     # Recalculate score
     risk.score = calculate_score(risk.likelihood, risk.impact)

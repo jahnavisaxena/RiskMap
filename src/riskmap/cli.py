@@ -2,7 +2,9 @@ import typer
 from rich import print
 from rich.table import Table
 from rich.console import Console
+from rich.prompt import Confirm
 from .risk_manager import RiskManager
+from .scanner import WebsiteScanner
 from .risk_scoring import calculate_score
 from .control_mapper import ControlMapper
 from .register_exporter import export_to_csv, export_to_json
@@ -12,6 +14,7 @@ app = typer.Typer(help="📘 RiskMap - Multi-Framework GRC Risk & Control Mappin
 console = Console()
 risk_manager = RiskManager()
 control_mapper = ControlMapper()
+scanner = WebsiteScanner()
 
 # ---------------------------
 # COMMAND: Add Risk
@@ -151,3 +154,62 @@ def delete(risk_id: int):
         print(f"[green]Risk {risk_id} deleted.[/green]")
     else:
         print(f"[red]Risk ID {risk_id} not found.[/red]")
+
+
+# ---------------------------
+# COMMAND: Scan Website
+# ---------------------------
+@app.command()
+def scan(
+    url: str = typer.Argument(..., help="Website URL to scan (e.g., https://example.com)")
+):
+    """
+    Auto-scan a website for security risks (Passive).
+    """
+    print(f"[bold blue]🚀 Starting passive scan for: {url}[/bold blue]")
+    
+    risks_found = scanner.scan(url)
+    
+    if not risks_found:
+        print(f"[green]No obvious risks found for {url}. Good job![/green]")
+        return
+        
+    # Display found risks
+    table = Table(title=f"Scan Results for {url}")
+    table.add_column("Risk Name", style="magenta")
+    table.add_column("Severity", style="red")
+    table.add_column("Description")
+    
+    for r in risks_found:
+        severity = "High" if r['impact'] >= 4 else "Medium"
+        table.add_row(r['name'], severity, r['description'])
+        
+    console.print(table)
+    
+    # Ask to save
+    if Confirm.ask("Do you want to add these risks to your register?"):
+        count = 0
+        for r in risks_found:
+            # Check if risk already exists (simple name check)
+            existing = [ex for ex in risk_manager.list_risks() if ex.name == r['name']]
+            if existing:
+                continue
+                
+            risk = risk_manager.add_risk(
+                name=r['name'],
+                description=r['description'],
+                likelihood=r['likelihood'],
+                impact=r['impact'],
+                framework="soc2"
+            )
+            # Add scanner type
+            risk.scanner_type = r.get('scanner_type', 'Manual')
+            
+            # Auto-map controls
+            risk.controls = control_mapper.map_controls(risk.name, risk.description, "soc2")
+            risk_manager.update_risk(risk)
+            count += 1
+            
+        print(f"[green]Successfully added {count} new risks to the register![/green]")
+    else:
+        print("[yellow]Scan completed. No risks added.[/yellow]")

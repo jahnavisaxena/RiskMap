@@ -57,6 +57,25 @@ document.addEventListener('DOMContentLoaded', () => {
     toggleAuditType('type1'); // Init SOC 2 View
 });
 
+// ========== Tab Switching ==========
+function switchTab(tabId) {
+    // Hide all views
+    document.querySelectorAll('.dashboard-section').forEach(el => el.style.display = 'none');
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+
+    // Show selected view
+    document.getElementById(`view-${tabId}`).style.display = 'block';
+
+    // Activate button
+    // Find button that calls this tabId
+    const buttons = document.getElementsByClassName('tab-btn');
+    for (let btn of buttons) {
+        if (btn.getAttribute('onclick').includes(tabId)) {
+            btn.classList.add('active');
+        }
+    }
+}
+
 // ========== SOC 2 Audit Type Toggle ==========
 function toggleAuditType(type) {
     currentAuditType = type;
@@ -107,7 +126,11 @@ async function loadRisks() {
         // In a real app we might filter by framework='soc2', but for this view we assume all are relevant or just show all
         allRisks = risks;
         displayRisks(risks);
-        // renderHeatMap(risks);
+        allRisks = risks;
+        displayRisks(risks);
+
+        // Render Scanner Dashboard Stats if risks are loaded
+        renderScannerDashboard(risks);
     } catch (error) {
         showToast('Error loading risks: ' + error.message, 'error');
     }

@@ -26,6 +26,7 @@ class Risk:
     due_date: Optional[str] = None  # ISO format: YYYY-MM-DD
     status: str = "Open"  # Open, In Progress, Mitigated, Closed
     framework: str = "soc2"  # soc2, iso27001, hipaa, etc.
+    scanner_type: str = "Manual"  # Manual, Vulnerability, Cloud, Dependency, Attack Surface
 
 class RiskManager:
     def __init__(self):
