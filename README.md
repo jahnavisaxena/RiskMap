@@ -1,46 +1,34 @@
-# RiskMap - GRC Automation Tool 🛡️
+# RiskMap - SOC 2 GRC Automation Tool 🛡️
 
 [![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Flask](https://img.shields.io/badge/Flask-Web%20Dashboard-green.svg)](https://flask.palletsprojects.com/)
 
-A powerful Governance, Risk, and Compliance (GRC) tool featuring both a **CLI** for command-line operations and a **Web Dashboard** for visual risk management.
+A specialized Governance, Risk, and Compliance (GRC) tool designed to streamline **SOC 2** compliance. It features both a **CLI** for rapid risk management and a **Web Dashboard** for visual analytics and evidence tracking.
 
 ![RiskMap Dashboard](Screenshot.png)
 
 ## 🚀 Features
 
-### CLI Tool
-- 📊 **Risk Management**: Add, list, score, and delete risks
-- 🤖 **AI-Powered Mapping**: Intelligent control mapping using OpenAI GPT-4o-mini
-- 🔄 **Multi-Framework Support**: SOC 2 and ISO 27001
-- 📁 **Export**: Generate audit-ready reports in CSV, JSON, or PDF
-
-### Web Dashboard (SOC 2 Focus)
+### SOC 2 Focused Web Dashboard
 - 📈 **Comprehensive Analytics**: 6 interactive charts including Risk Severity, Status, and Heat Map.
-- ✅ **Readiness Checklist**: Track SOC 2 Type 1 / Type 2 progress with automated progress bars.
-- 📂 **Evidence Management**: View required evidence artifacts for audits.
-- 🎨 **Modern UI/UX**:
-  - **Typography**: Switched to **Inter** font for superior readability.
-  - **Theme**: Premium **Slate & Indigo** color palette (Light & Dark modes).
-  - **High Contrast**: Optimized text and charts for maximum accessibility.
-  - **Clean Design**: Removed clutter (e.g., emojis) for a professional look.
+- ✅ **Readiness Checklist**: Automated tracking for SOC 2 Type 1 (Design) and Type 2 (Operating Effectiveness).
+- 📂 **Evidence Management**: Manage required artifacts (Policies, Logs, Screenshots) with status indicators.
+- 🎨 **Modern UI/UX**: Premium **Inter** typography, **Slate & Indigo** theme, and high-contrast **Dark Mode**.
+
+### CLI Tool
+- 📊 **Risk Management**: Quickly add, score, and manage risks related to Trust Service Criteria (TSC).
+- 🤖 **AI-Powered Mapping**: Automatically maps risks to relevant SOC 2 Common Criteria (CC) controls using OpenAI.
+- 📁 **Export**: Generate audit-ready risk registers in CSV, JSON, or PDF.
 
 ---
 
 ## 📦 Installation
 
-### Option 1: Install CLI via pip (Recommended)
+### Option 1: Install via pip
 
 ```bash
 pip install git+https://github.com/jahnavisaxena/RiskMap.git
-```
-
-After installation, use the `riskmap` command anywhere:
-```bash
-riskmap add "Data Breach" --likelihood 4 --impact 5
-riskmap list
-riskmap export --format pdf
 ```
 
 ### Option 2: Clone and Run Locally
@@ -53,101 +41,56 @@ cd RiskMap
 # Install dependencies
 pip install -r requirements.txt
 
-# Run CLI
-python main.py list
-
 # Run Web Dashboard
 python app.py
 # Visit http://localhost:5000
 ```
 
-### Option 3: Kali Linux / Ubuntu (Virtual Environment)
-
-```bash
-# Clone the repository
-git clone https://github.com/jahnavisaxena/RiskMap.git
-cd RiskMap
-
-# Create and activate virtual environment
-python3 -m venv venv
-source venv/bin/activate
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Run Web Dashboard
-python app.py
-```
-
 ---
 
-## 🖥️ CLI Usage
+## 🖥️ CLI Usage for SOC 2
 
-### Basic Commands
-
-| Command | Description |
-|---------|-------------|
-| `riskmap add "Risk Name" -l 4 -i 5` | Add a new risk |
-| `riskmap list` | List all risks |
-| `riskmap delete <id>` | Delete a risk by ID |
-| `riskmap export --format csv` | Export to CSV |
-| `riskmap export --format pdf` | Export to PDF |
-
-### Add a Risk (SOC 2)
+### Add a Risk
 ```bash
-riskmap add "Data Breach" --likelihood 4 --impact 5
+riskmap add "Data Breach" --likelihood 4 --impact 5 --category "Security"
 ```
 
-### Add a Risk (ISO 27001)
+### Add a Risk with Control Mapping
 ```bash
-riskmap add "SQL Injection" --desc "Web app vulnerable" --likelihood 5 --impact 5 --framework iso27001
+# Automatically maps to SOC 2 CC controls (e.g., CC6.1)
+riskmap add "Unauthorised Access" --desc "Lack of MFA" --likelihood 5 --impact 5
 ```
 
-### Add a Risk (HIPAA)
+### Export Risk Register
 ```bash
-riskmap add "Unencrypted Patient Data" --likelihood 5 --impact 5 --framework hipaa
+riskmap export --format pdf
 ```
 
-### Add a Risk (NIST CSF)
+### Enable AI Mapping
+Set your OpenAI API key to enable intelligent control mapping:
 ```bash
-riskmap add "Lack of Incident Response Plan" --likelihood 4 --impact 4 --framework nist
-```
+# Linux/Mac
+export OPENAI_API_KEY="sk-..."
 
-### Enable AI-Powered Mapping
-
-Set your OpenAI API key:
-
-**Windows PowerShell:**
-```powershell
+# Windows PowerShell
 $env:OPENAI_API_KEY="sk-..."
 ```
 
-**Linux/Mac:**
-```bash
-export OPENAI_API_KEY="sk-..."
-```
-
 ---
 
-## 🌐 Web Dashboard
+## 🌐 Web Dashboard Guide
 
-Start the web server:
-```bash
-python app.py
-```
+Start the server with `python app.py` and navigate to `http://localhost:5000`.
 
-Open [http://localhost:5000](http://localhost:5000) in your browser.
+### SOC 2 Widgets
+- **Audit Scope**: Toggle between **Type 1** (Point-in-time) and **Type 2** (Period of time) views.
+- **Readiness Tracker**: Visual gauge showing your % readiness for the audit.
+- **Evidence Panel**: List of required evidence documents (Green = Ready, Red = Missing).
 
-### Dashboard Features:
-- **SOC 2 Widget**: Toggle between Type 1 & Type 2 audit views.
-- **Readiness Tracker**: Visual progress of your control implementation.
-- **Advanced Charts**:
-  - Risk Severity & Status Doughnuts
-  - Interactive Bubble Heat Map
-  - Polar Area Chart (TSC Categories)
-  - Control Coverage Gauge
-- **Risk Register**: Sortable table with CRUD actions.
-- **Themes**: Modern Slate/Indigo design with robust Dark Mode.
+### Visualizations
+- **Risk Heat Map**: Interactive 5x5 matrix (Likelihood × Impact).
+- **TSC Coverage**: Polar chart showing risk distribution across Security, Availability, Confidentiality, etc.
+- **Control Implementation**: Gauge chart tracking mitigated risks vs total risks.
 
 ---
 
@@ -157,71 +100,34 @@ Open [http://localhost:5000](http://localhost:5000) in your browser.
 RiskMap/
 ├── app.py                    # Flask web server
 ├── main.py                   # CLI entry point
-├── setup.py                  # pip installation config
-├── requirements.txt
 ├── src/
 │   ├── riskmap/
-│   │   ├── cli.py           # CLI commands (Typer)
-│   │   ├── risk_manager.py  # Risk CRUD operations
-│   │   ├── risk_scoring.py  # Scoring logic
-│   │   ├── control_mapper.py# AI + keyword mapping
-│   │   └── register_exporter.py
+│   │   ├── risk_manager.py   # Core logic
+│   │   ├── control_mapper.py # AI mapping for SOC 2
+│   │   └── ...
 │   └── data/
-│       ├── soc2_controls.json
-│       └── iso27001_controls.json
+│       └── soc2_controls.json # SOC 2 Common Criteria
 ├── static/
-│   ├── css/style.css
-│   └── js/app.js
-├── templates/
-│   └── index.html
-└── tests/
-    └── test_core.py
+│   ├── css/style.css         # Modern styling (Slate/Indigo)
+│   └── js/app.js             # Dashboard logic & Chart.js
+└── templates/
+    └── index.html            # Dashboard UI
 ```
 
 ---
 
 ## 🛠️ Technologies
-
-| Technology | Purpose |
-|------------|---------|
-| **Python 3.8+** | Core language |
-| **Flask** | Web framework |
-| **Typer + Rich** | Beautiful CLI |
-| **Chart.js** | Dashboard charts |
-| **OpenAI GPT-4o-mini** | AI control mapping |
-| **Pandas** | Data manipulation |
-| **ReportLab** | PDF generation |
-
----
-
-## 🔧 Frameworks Supported
-
-- **SOC 2**: Common Criteria (CC) controls
-- **ISO 27001**: Annex A controls
-- **HIPAA**: Security Rule safeguards
-- **PCI-DSS v4.0**: Payment card industry standards
-- **GDPR**: Data protection & privacy articles
-- **NIST CSF**: Identify, Protect, Detect, Respond, Recover
+- **Python 3.8+** & **Flask**
+- **Chart.js** for visual analytics
+- **OpenAI GPT-4o-mini** for intelligent mapping
+- **Typer** for CLI operations
 
 ---
 
 ## 📄 License
-
-MIT License - feel free to use for personal and commercial projects.
+MIT License
 
 ---
 
 ## 👩‍💻 Author
-
 **Jahnavi Saxena**
-
-
----
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit changes (`git commit -m 'Add amazing feature'`)
-4. Push to branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
