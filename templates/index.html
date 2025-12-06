@@ -5,7 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RiskMap - GRC Dashboard</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=2">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
@@ -39,18 +42,46 @@
     <main class="container">
         <!-- SOC 2 specific Dashboard -->
         <section class="dashboard-section">
+            <!-- Key Metrics Grid -->
+            <div class="metrics-grid">
+                <div class="stat-card stat-total">
+                    <div class="stat-number" id="total-risks">0</div>
+                    <div class="stat-label">Total Risks</div>
+                </div>
+                <div class="stat-card stat-critical">
+                    <div class="stat-number" id="critical-risks">0</div>
+                    <div class="stat-label">Critical</div>
+                </div>
+                <div class="stat-card stat-high">
+                    <div class="stat-number" id="high-risks">0</div>
+                    <div class="stat-label">High</div>
+                </div>
+                <div class="stat-card stat-medium">
+                    <div class="stat-number" id="medium-risks">0</div>
+                    <div class="stat-label">Medium</div>
+                </div>
+                <div class="stat-card stat-low">
+                    <div class="stat-number" id="low-risks">0</div>
+                    <div class="stat-label">Low</div>
+                </div>
+            </div>
+
             <!-- Audit Type Selector Widget -->
             <div class="audit-type-widget">
                 <div class="audit-header">
                     <h3>SOC 2 Audit Scope</h3>
                     <div class="audit-toggle-group">
-                        <input type="radio" id="type1" name="audit-type" value="type1" checked
-                            onchange="toggleAuditType('type1')">
-                        <label for="type1">Type 1 (Point-in-Time)</label>
+                        <span class="radio-item">
+                            <input type="radio" id="type1" name="audit-type" value="type1" checked
+                                onchange="toggleAuditType('type1')">
+                            <label for="type1">Type 1</label>
+                        </span>
 
-                        <input type="radio" id="type2" name="audit-type" value="type2"
-                            onchange="toggleAuditType('type2')">
-                        <label for="type2">Type 2 (Period of Time)</label>
+                        <span class="radio-item">
+                            <input type="radio" id="type2" name="audit-type" value="type2"
+                                onchange="toggleAuditType('type2')">
+                            <label for="type2">Type 2</label>
+                        </span>
                     </div>
                 </div>
                 <div class="audit-info">
@@ -86,74 +117,93 @@
                 </div>
             </div>
 
-            <!-- Charts Row -->
-            <div class="charts-grid">
-                <div class="chart-container">
-                    <h3>Risks by Trust Service Criteria</h3>
+            <!-- Comprehensive SOC 2 Charts Grid -->
+            <div class="charts-grid-analytics">
+                <!-- 1. Risk Severity Donut -->
+                <div class="chart-card">
+                    <h3>Risk Severity</h3>
                     <div class="canvas-wrapper">
-                        <canvas id="tscChart"></canvas>
+                        <canvas id="severityChart"></canvas>
                     </div>
                 </div>
-                <div class="chart-container">
-                    <h3>Control Gap Analysis</h3>
+
+                <!-- 2. Risk Status Donut -->
+                <div class="chart-card">
+                    <h3>Risk Status</h3>
                     <div class="canvas-wrapper">
-                        <canvas id="gapChart"></canvas>
+                        <canvas id="statusChart"></canvas>
                     </div>
                 </div>
-                <div class="top-risks-container">
-                    <h3>🚨 Top SOC 2 Risks</h3>
-                    <div id="top-risks-list" class="top-risks-list">
-                        <!-- Populated by JS -->
+
+                <!-- 3. Risk Heat Map (Re-implemented) -->
+                <div class="chart-card heatmap-card">
+                    <h3>Risk Heat Map</h3>
+                    <div class="canvas-wrapper">
+                        <canvas id="heatmapChart"></canvas> <!-- Switched to Chart.js Bubble Chart for stability -->
+                    </div>
+                </div>
+
+                <!-- 4. Risks by SOC 2 Category -->
+                <div class="chart-card">
+                    <h3>Risks by TSC Category</h3>
+                    <div class="canvas-wrapper">
+                        <canvas id="tscCategoryChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- 5. Risks by Owner -->
+                <div class="chart-card">
+                    <h3>Risks by Owner</h3>
+                    <div class="canvas-wrapper">
+                        <canvas id="ownerChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- 6. SOC 2 Control Coverage -->
+                <div class="chart-card">
+                    <h3>Control Coverage Progress</h3>
+                    <div class="canvas-wrapper">
+                        <canvas id="coverageChart"></canvas>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- Risk Heat Map -->
-        <section class="heat-map-section">
-            <div class="heat-map-header">
-                <h2>Risk Heat Map</h2>
-                <div class="heat-map-legend">
-                    <span class="legend-item"><span class="legend-color critical-zone"></span> Critical (20-25)</span>
-                    <span class="legend-item"><span class="legend-color high-zone"></span> High (15-19)</span>
-                    <span class="legend-item"><span class="legend-color medium-zone"></span> Medium (10-14)</span>
-                    <span class="legend-item"><span class="legend-color low-zone"></span> Low (1-9)</span>
+
+        <section class="risk-register-section">
+            <div class="section-header">
+                <h2>Risk Register</h2>
+                <div class="section-actions">
+                    <button class="btn btn-secondary btn-small" onclick="exportRisks('csv')">Export CSV</button>
+                    <button class="btn btn-secondary btn-small" onclick="exportRisks('json')">Export JSON</button>
+                    <button class="btn btn-secondary btn-small" onclick="exportRisks('pdf')">Export PDF</button>
+                    <button class="btn btn-primary" onclick="openAddModal()">+ Add Risk</button>
                 </div>
             </div>
 
-            <div class="heat-map-container">
-                <div class="heat-map-grid-wrapper">
-                    <div class="y-axis-label">Likelihood</div>
-                    <div class="y-axis">
-                        <div class="axis-tick">5</div>
-                        <div class="axis-tick">4</div>
-                        <div class="axis-tick">3</div>
-                        <div class="axis-tick">2</div>
-                        <div class="axis-tick">1</div>
-                    </div>
-
-                    <div class="heat-map-grid" id="heat-map-grid">
-                        <!-- Grid cells will be generated by JavaScript -->
-                    </div>
-                </div>
-
-                <div class="x-axis">
-                    <div class="axis-tick">1</div>
-                    <div class="axis-tick">2</div>
-                    <div class="axis-tick">3</div>
-                    <div class="axis-tick">4</div>
-                    <div class="axis-tick">5</div>
-                </div>
-                <div class="x-axis-label">Impact</div>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Risk Name & Description</th>
+                            <th>TSC Category</th>
+                            <th style="text-align: center;">Likelihood</th>
+                            <th style="text-align: center;">Impact</th>
+                            <th style="text-align: center;">Score</th>
+                            <th>Severity</th>
+                            <th>Controls</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="risk-table-body">
+                        <tr>
+                            <td colspan="9" class="no-data">No risks found. Click "Add Risk" to get started.</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-        </section>
-        <tbody id="risk-table-body">
-            <tr>
-                <td colspan="9" class="no-data">No risks found. Click "Add Risk" to get started.</td>
-            </tr>
-        </tbody>
-        </table>
-        </div>
         </section>
     </main>
 

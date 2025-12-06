@@ -16,11 +16,15 @@ A powerful Governance, Risk, and Compliance (GRC) tool featuring both a **CLI** 
 - 🔄 **Multi-Framework Support**: SOC 2 and ISO 27001
 - 📁 **Export**: Generate audit-ready reports in CSV, JSON, or PDF
 
-### Web Dashboard
-- 📈 **Visual Analytics**: Charts for risks by status and owner
-- 🗺️ **Risk Heat Map**: Interactive 5x5 likelihood vs impact matrix
-- 🌙 **Dark Mode**: Toggle between light and dark themes
-- 🚨 **Top 5 Critical Risks**: Quick view of highest priority items
+### Web Dashboard (SOC 2 Focus)
+- 📈 **Comprehensive Analytics**: 6 interactive charts including Risk Severity, Status, and Heat Map.
+- ✅ **Readiness Checklist**: Track SOC 2 Type 1 / Type 2 progress with automated progress bars.
+- 📂 **Evidence Management**: View required evidence artifacts for audits.
+- 🎨 **Modern UI/UX**:
+  - **Typography**: Switched to **Inter** font for superior readability.
+  - **Theme**: Premium **Slate & Indigo** color palette (Light & Dark modes).
+  - **High Contrast**: Optimized text and charts for maximum accessibility.
+  - **Clean Design**: Removed clutter (e.g., emojis) for a professional look.
 
 ---
 
@@ -135,11 +139,15 @@ python app.py
 Open [http://localhost:5000](http://localhost:5000) in your browser.
 
 ### Dashboard Features:
-- **Stat Cards**: Total, Critical, High, Medium, Low risk counts
-- **Charts**: Risks by Status (doughnut) & Risks by Owner (bar)
-- **Heat Map**: Visual risk matrix (Likelihood × Impact)
-- **Risk Register**: Full table with CRUD operations
-- **Dark Mode**: 🌙 Toggle in header
+- **SOC 2 Widget**: Toggle between Type 1 & Type 2 audit views.
+- **Readiness Tracker**: Visual progress of your control implementation.
+- **Advanced Charts**:
+  - Risk Severity & Status Doughnuts
+  - Interactive Bubble Heat Map
+  - Polar Area Chart (TSC Categories)
+  - Control Coverage Gauge
+- **Risk Register**: Sortable table with CRUD actions.
+- **Themes**: Modern Slate/Indigo design with robust Dark Mode.
 
 ---
 

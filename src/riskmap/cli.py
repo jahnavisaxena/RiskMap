@@ -21,19 +21,18 @@ def add(
     name: str = typer.Argument(..., help="Risk name"),
     description: str = typer.Option("", "--desc", help="Risk description"),
     likelihood: int = typer.Option(..., "--likelihood", "-l", help="Likelihood (1-5)"),
-    impact: int = typer.Option(..., "--impact", "-i", help="Impact (1-5)"),
-    framework: str = typer.Option("soc2", "--framework", help="Compliance Framework (soc2 | iso27001 | hipaa | pcidss | gdpr | nist)")
+    impact: int = typer.Option(..., "--impact", "-i", help="Impact (1-5)")
 ):
     """
     Add a new risk to the risk register.
     """
-    risk = risk_manager.add_risk(name, description, likelihood, impact, framework)
+    risk = risk_manager.add_risk(name, description, likelihood, impact, "soc2")
     
     # Auto-calculate score
     risk.score = calculate_score(risk.likelihood, risk.impact)
     
     # Auto-map controls
-    risk.controls = control_mapper.map_controls(risk.name, risk.description, framework)
+    risk.controls = control_mapper.map_controls(risk.name, risk.description, "soc2")
     
     risk_manager.update_risk(risk)
 
@@ -94,8 +93,7 @@ def score(risk_id: int):
 # ---------------------------
 @app.command("map-controls")
 def map_controls(
-    risk_id: int,
-    framework: str = typer.Option("soc2", "--framework", help="Compliance Framework (soc2 | iso27001 | hipaa | pcidss | gdpr | nist)")
+    risk_id: int
 ):
     """
     Map controls to a given risk.
@@ -105,7 +103,7 @@ def map_controls(
         print(f"[red]Risk ID {risk_id} not found.[/red]")
         return
 
-    controls = control_mapper.map_controls(risk.name, risk.description, framework)
+    controls = control_mapper.map_controls(risk.name, risk.description, "soc2")
     risk.controls = controls
     risk_manager.update_risk(risk)
     

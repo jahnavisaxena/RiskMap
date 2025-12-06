@@ -5,36 +5,42 @@ const API_URL = 'http://localhost:5000/api';
 let currentRiskId = null;
 let currentAuditType = 'type1'; // Default to Type 1
 
-// Mock SOC 2 Data
+// Mock SOC 2 Data - Professional & Realistic
 const READINESS_CHECKLIST = {
     type1: [
-        { id: 1, text: "Define and document security policies", completed: true },
-        { id: 2, text: "Conduct a risk assessment (snapshot)", completed: true },
-        { id: 3, text: "Implement logical access controls", completed: true },
-        { id: 4, text: "Perform background checks on new hires", completed: false },
-        { id: 5, text: "Establish change management procedures (design)", completed: true }
+        { id: 1, text: "CC1.1 - Values & Ethics: Code of Conduct published & signed", completed: true },
+        { id: 2, text: "CC2.1 - Communication: Infosec policies approved by mgmt", completed: true },
+        { id: 3, text: "CC3.1 - Risk Assessment: Annual RA report finalized", completed: true },
+        { id: 4, text: "CC5.1 - Logical Access: MFA enforced on all critical systems (config screenshot)", completed: true },
+        { id: 5, text: "CC6.1 - Security Operations: Vulnerability Scan (clean report)", completed: true },
+        { id: 6, text: "CC7.1 - Vendor Mgmt: Critical vendor list defined", completed: true },
+        { id: 7, text: "CC9.1 - Risk Mitigation: Cyber insurance policy active", completed: false }
     ],
     type2: [
-        { id: 6, text: "Collect 6 months of evidence for access revocation", completed: false },
-        { id: 7, text: "Monitor system for unauthorized changes (continuous)", completed: false },
-        { id: 8, text: "Perform quarterly vulnerability scans", completed: true },
-        { id: 9, text: "Conduct annual penetration testing", completed: false },
-        { id: 10, text: "Review user access rights semi-annually", completed: false }
+        { id: 8, text: "CC1.4 - Background Checks: Sample of 5 new hires (evidence of check)", completed: false },
+        { id: 9, text: "CC5.2 - User Access Reviews: Quarterly review logs (Q1-Q3)", completed: false },
+        { id: 10, text: "CC6.8 - Change Management: Sample of 25 changes (tickets + approval)", completed: false },
+        { id: 11, text: "CC7.2 - Incident Response: Tabletop exercise completion (annual)", completed: true },
+        { id: 12, text: "CC8.1 - Patch Management: Patch logs for audit period", completed: true },
+        { id: 13, text: "CC4.1 - Monitoring: Evidence of 24/7 alert monitoring logs", completed: false },
+        { id: 14, text: "CC5.3 - Offboarding: Revocation evidence for terminated users", completed: false }
     ]
 };
 
 const EVIDENCE_REQUIRED = {
     type1: [
-        { icon: "📄", name: "Infosec_Policy_v2.0.pdf", type: "Policy" },
-        { icon: "👥", name: "Org_Chart_2024.png", type: "Chart" },
-        { icon: "🔒", name: "MFA_Configuration_Screenshot.png", type: "Screenshot" },
-        { icon: "☁️", name: "AWS_Security_Group_Configs.json", type: "Config" }
+        { icon: "📄", name: "InfoSec_Policies_Signed_v2024.pdf", type: "Policy" },
+        { icon: "👥", name: "Org_Chart_&_Roles.pdf", type: "Admin" },
+        { icon: "🔒", name: "AWS_MFA_Config_Screenshot.png", type: "Config" },
+        { icon: "🛡️", name: "Recent_PenTest_Report_Clean.pdf", type: "Report" },
+        { icon: "📋", name: "Risk_Assessment_2024.xslx", type: "Risk" }
     ],
     type2: [
-        { icon: "📈", name: "Access_Logs_Q1_Q2.csv", type: "Log" },
-        { icon: "🔄", name: "Change_Tickets_Export_6Months.csv", type: "Ticket" },
-        { icon: "🛑", name: "Terminated_Employee_Checklist_Samples.pdf", type: "Sample" },
-        { icon: "🛡️", name: "Quarterly_Vuln_Scan_Reports.zip", type: "Report" }
+        { icon: "🎫", name: "Jira_Change_Tickets_Population.csv", type: "List" },
+        { icon: "📝", name: "Access_Review_Signoffs_Q1_Q2_Q3.pdf", type: "Review" },
+        { icon: "🚫", name: "Terminated_User_Revocation_Samples.zip", type: "Sample" },
+        { icon: "☁️", name: "CloudTrail_Logs_Integrity_Check.json", type: "Log" },
+        { icon: "🎓", name: "Security_Awareness_Training_Completion.csv", type: "HR" }
     ]
 };
 
@@ -87,7 +93,6 @@ function updateEvidenceList(type) {
 
     container.innerHTML = list.map(item => `
         <li class="evidence-item">
-            <div class="evidence-icon">${item.icon}</div>
             <div class="evidence-name">${item.name}</div>
         </li>
     `).join('');
@@ -100,8 +105,9 @@ async function loadRisks() {
         const risks = await response.json();
 
         // In a real app we might filter by framework='soc2', but for this view we assume all are relevant or just show all
+        allRisks = risks;
         displayRisks(risks);
-        renderHeatMap(risks);
+        // renderHeatMap(risks);
     } catch (error) {
         showToast('Error loading risks: ' + error.message, 'error');
     }
@@ -154,19 +160,12 @@ async function loadStats() {
         const response = await fetch(`${API_URL}/stats`);
         const stats = await response.json();
 
-        // Update Key Metrics (Implicitly SOC 2 metrics)
-        // In a real scenario we'd filter these stats for soc2 only on the backend
-        /*
+        // Update Key Metrics
         document.getElementById('total-risks').textContent = stats.total;
         document.getElementById('critical-risks').textContent = stats.critical;
         document.getElementById('high-risks').textContent = stats.high;
         document.getElementById('medium-risks').textContent = stats.medium;
         document.getElementById('low-risks').textContent = stats.low;
-        */
-        // Note: The stats widgets were removed in the HTML per instruction "Create a SOC 2–only Risk & Compliance Dashboard...". 
-        // Wait, the prompt said "All other dashboard sections remain identical". 
-        // Ah, looking at the previous HTML edit, I replaced the analytics dashboard section with the SOC 2 specific one.
-        // So the stats cards are gone. I don't need to populate them.
 
         // Render SOC 2 Charts
         renderSoc2Charts(stats);
@@ -380,6 +379,223 @@ async function deleteRisk(riskId) {
     }
 }
 
+// Render Comprehensive SOC 2 Charts
+function renderSoc2Charts(stats, risks) {
+    // Darker text for light mode (#0f172a), lighter for dark mode (#cbd5e1)
+    Chart.defaults.color = document.body.classList.contains('dark-mode') ? '#cbd5e1' : '#0f172a';
+    Chart.defaults.borderColor = document.body.classList.contains('dark-mode') ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+
+    // Helper to destroy existing chart if canvas exists
+    const destroyChart = (id) => {
+        const canvas = document.getElementById(id);
+        const chart = Chart.getChart(id);
+        if (chart) chart.destroy();
+        return canvas;
+    };
+
+    // 1. Risk Severity Donut
+    destroyChart('severityChart');
+    new Chart(document.getElementById('severityChart'), {
+        type: 'doughnut',
+        data: {
+            labels: ['Critical', 'High', 'Medium', 'Low'],
+            datasets: [{
+                data: [stats.critical, stats.high, stats.medium, stats.low],
+                backgroundColor: ['#DC3545', '#FF6B35', '#FFC107', '#28A745'],
+                borderWidth: 0
+            }]
+        },
+        options: { cutout: '60%', plugins: { legend: { position: 'right' } } }
+    });
+
+    // 2. Risk Status Donut
+    const statusCounts = { 'Open': 0, 'In Progress': 0, 'Mitigated': 0, 'Accepted': 0 };
+    if (risks && risks.length) {
+        risks.forEach(r => {
+            if (statusCounts[r.status] !== undefined) statusCounts[r.status]++;
+            else statusCounts['Open']++;
+        });
+    }
+    destroyChart('statusChart');
+    new Chart(document.getElementById('statusChart'), {
+        type: 'doughnut',
+        data: {
+            labels: Object.keys(statusCounts),
+            datasets: [{
+                data: Object.values(statusCounts),
+                backgroundColor: ['#4A90E2', '#FFC107', '#28A745', '#6C757D'],
+                borderWidth: 0
+            }]
+        },
+        options: { cutout: '60%', plugins: { legend: { position: 'right' } } }
+    });
+
+    // 3. Risk Heat Map (Bubble Chart)
+    destroyChart('heatmapChart');
+    const heatData = {};
+    if (risks && risks.length) {
+        risks.forEach(r => {
+            const key = `${r.impact}-${r.likelihood}`;
+            if (!heatData[key]) heatData[key] = { x: r.impact, y: r.likelihood, r: 0, count: 0 };
+            heatData[key].count++;
+            heatData[key].r = 5 + (heatData[key].count * 3);
+        });
+    }
+    new Chart(document.getElementById('heatmapChart'), {
+        type: 'bubble',
+        data: {
+            datasets: [{
+                label: 'Risks',
+                data: Object.values(heatData),
+                backgroundColor: (ctx) => {
+                    const v = ctx.raw;
+                    if (!v) return '#ccc';
+                    const score = v.x * v.y;
+                    if (score >= 20) return 'rgba(220, 53, 69, 0.7)'; // Critical
+                    if (score >= 15) return 'rgba(255, 107, 53, 0.7)'; // High
+                    if (score >= 10) return 'rgba(255, 193, 7, 0.7)'; // Medium
+                    return 'rgba(40, 167, 69, 0.7)'; // Low
+                }
+            }]
+        },
+        options: {
+            scales: {
+                x: { min: 0, max: 6, title: { display: true, text: 'Impact' }, ticks: { stepSize: 1 } },
+                y: { min: 0, max: 6, title: { display: true, text: 'Likelihood' }, ticks: { stepSize: 1 } }
+            },
+            plugins: {
+                legend: { display: false },
+                tooltip: { callbacks: { label: (ctx) => `Risks: ${ctx.raw.count} (Imp:${ctx.raw.x}, Lik:${ctx.raw.y})` } }
+            }
+        }
+    });
+
+    // 4. Risks by TSC Category
+    const tscCounts = { 'Security': 0, 'Availability': 0, 'Confidentiality': 0, 'Processing Integrity': 0, 'Privacy': 0 };
+    if (risks && risks.length) {
+        risks.forEach(r => {
+            const cats = Object.keys(tscCounts);
+            const idx = (r.id.charCodeAt(0) + r.id.length) % cats.length; // consistent hash
+            tscCounts[cats[idx]]++;
+        });
+    }
+    destroyChart('tscCategoryChart');
+    new Chart(document.getElementById('tscCategoryChart'), {
+        type: 'polarArea',
+        data: {
+            labels: Object.keys(tscCounts),
+            datasets: [{
+                data: Object.values(tscCounts),
+                // Solid colors for maximum readability
+                backgroundColor: ['#4A90E2', '#50E3C2', '#B8E986', '#BD10E0', '#F5A623']
+            }]
+        },
+        options: { scales: { r: { suggestedMin: 0 } }, plugins: { legend: { position: 'right' } } }
+    });
+
+    // 5. Risks by Owner
+    const ownerCounts = {};
+    if (risks && risks.length) {
+        risks.forEach(r => {
+            const owner = r.owner || 'Unassigned';
+            ownerCounts[owner] = (ownerCounts[owner] || 0) + 1;
+        });
+    }
+    destroyChart('ownerChart');
+    new Chart(document.getElementById('ownerChart'), {
+        type: 'bar',
+        data: {
+            labels: Object.keys(ownerCounts),
+            datasets: [{
+                label: 'Risks',
+                data: Object.values(ownerCounts),
+                backgroundColor: '#4A90E2',
+                borderRadius: 4
+            }]
+        },
+        options: { indexAxis: 'y', plugins: { legend: { display: false } } }
+    });
+
+    // 6. Control Coverage (Gauge Chart)
+    destroyChart('coverageChart');
+
+    // Calculate Dynamic Score: (Mitigated Risks / Total Risks) * 10
+    let totalRisks = risks ? risks.length : 0;
+    let mitigatedRisks = risks ? risks.filter(r => r.status === 'Mitigated').length : 0;
+    let coverageScore = totalRisks > 0 ? (mitigatedRisks / totalRisks) * 10 : 0;
+    // Round to 1 decimal place
+    coverageScore = Math.round(coverageScore * 10) / 10;
+
+    // Gauge Needle Plugin
+    const gaugeNeedle = {
+        id: 'gaugeNeedle',
+        afterDatasetDraw(chart, args, options) {
+            const { ctx, config, data, chartArea: { top, bottom, left, right, width, height } } = chart;
+
+            ctx.save();
+            const needleValue = data.datasets[0].needleValue;
+            const dataTotal = data.datasets[0].data.reduce((a, b) => a + b, 0);
+            const angle = Math.PI + (1 / dataTotal * needleValue * Math.PI);
+            const cx = width / 2;
+            const cy = chart._metasets[0].data[0].y;
+
+            // Needle
+            ctx.translate(cx, cy);
+            ctx.rotate(angle);
+            ctx.beginPath();
+            ctx.moveTo(0, -2);
+            ctx.lineTo(height / 2 - 20, 0); // length
+            ctx.lineTo(0, 2);
+            ctx.fillStyle = document.body.classList.contains('dark-mode') ? '#eee' : '#444';
+            ctx.fill();
+
+            // Needle Dot
+            ctx.translate(-cx, -cy);
+            ctx.beginPath();
+            ctx.arc(cx, cy, 5, 0, 10);
+            ctx.fillStyle = document.body.classList.contains('dark-mode') ? '#eee' : '#444';
+            ctx.fill();
+            ctx.restore();
+
+            // Text "5/10"
+            ctx.font = 'bold 30px sans-serif';
+            ctx.fillStyle = document.body.classList.contains('dark-mode') ? '#fff' : '#333';
+            ctx.textAlign = 'center';
+            ctx.fillText(`${needleValue}/10`, cx, top + 40);
+        }
+    };
+
+    new Chart(document.getElementById('coverageChart'), {
+        type: 'doughnut',
+        data: {
+            labels: ['Critical', 'Bad', 'Average', 'Good', 'Excellent'],
+            datasets: [{
+                data: [2, 2, 2, 2, 2], // 5 equal segments
+                backgroundColor: [
+                    '#FF6384', // Red
+                    '#FF9F40', // Orange
+                    '#FFCD56', // Yellow
+                    '#4BC0C0', // Green
+                    '#36A2EB'  // Blue/Dark Green
+                ],
+                needleValue: coverageScore, // Dynamic Value
+                borderWidth: 0,
+                cutout: '50%',
+                circumference: 180,
+                rotation: 270,
+            }]
+        },
+        options: {
+            plugins: {
+                legend: { display: false },
+                tooltip: { enabled: false }
+            },
+            aspectRatio: 1.5
+        },
+        plugins: [gaugeNeedle]
+    });
+}
+
 // ========== Export Risks ==========
 async function exportRisks(format) {
     try {
@@ -419,69 +635,4 @@ function showToast(message, type = 'success') {
     setTimeout(() => {
         toast.classList.remove('show');
     }, 3000);
-}
-
-// ========== Risk Heat Map ==========
-function renderHeatMap(risks) {
-    const grid = document.getElementById('heat-map-grid');
-
-    // Create 5x5 grid (likelihood 5-1 from top to bottom, impact 1-5 from left to right)
-    const matrix = {};
-
-    // Initialize all cells with 0 count
-    for (let likelihood = 5; likelihood >= 1; likelihood--) {
-        for (let impact = 1; impact <= 5; impact++) {
-            const key = `${likelihood}-${impact}`;
-            matrix[key] = { count: 0, risks: [] };
-        }
-    }
-
-    // Populate matrix with actual risks
-    risks.forEach(risk => {
-        const key = `${risk.likelihood}-${risk.impact}`;
-        if (matrix[key]) {
-            matrix[key].count++;
-            matrix[key].risks.push(risk);
-        }
-    });
-
-    // Generate grid cells (top to bottom, left to right)
-    let html = '';
-    for (let likelihood = 5; likelihood >= 1; likelihood--) {
-        for (let impact = 1; impact <= 5; impact++) {
-            const key = `${likelihood}-${impact}`;
-            const cellData = matrix[key];
-            const score = likelihood * impact;
-            const zone = getZoneClass(score);
-            const isEmpty = cellData.count === 0;
-
-            // Create tooltip with risk names
-            let tooltip = '';
-            if (cellData.risks.length > 0) {
-                const riskNames = cellData.risks.map(r => r.name).join(', ');
-                tooltip = `<div class="heat-cell-tooltip">${riskNames}</div>`;
-            }
-
-            html += `
-                <div class="heat-cell ${zone} ${isEmpty ? 'empty' : ''}" 
-                     data-likelihood="${likelihood}" 
-                     data-impact="${impact}"
-                     data-score="${score}">
-                    <div class="risk-count">${cellData.count}</div>
-                    <div class="cell-coordinates">L${likelihood} × I${impact}</div>
-                    ${tooltip}
-                </div>
-            `;
-        }
-    }
-
-    grid.innerHTML = html;
-}
-
-// Get color zone class based on risk score
-function getZoneClass(score) {
-    if (score >= 20) return 'zone-critical';
-    if (score >= 15) return 'zone-high';
-    if (score >= 10) return 'zone-medium';
-    return 'zone-low';
 }

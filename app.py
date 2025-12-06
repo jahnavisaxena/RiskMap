@@ -79,8 +79,27 @@ def add_risk():
     # Validate input
     if not data.get('name'):
         return jsonify({'error': 'Risk name is required'}), 400
-    framework = data.get('framework', 'soc2')
-    risk.controls = control_mapper.map_controls(risk.name, risk.description, framework)
+    
+    likelihood = int(data.get('likelihood', 1))
+    impact = int(data.get('impact', 1))
+    
+    if not (1 <= likelihood <= 5 and 1 <= impact <= 5):
+        return jsonify({'error': 'Likelihood and impact must be between 1 and 5'}), 400
+    
+    # Add risk
+    risk = risk_manager.add_risk(
+        name=data['name'],
+        description=data.get('description', ''),
+        likelihood=likelihood,
+        impact=impact,
+        framework=data.get('framework', 'soc2')
+    )
+    
+    # Calculate score
+    risk.score = calculate_score(risk.likelihood, risk.impact)
+    
+    # Map controls
+    risk.controls = control_mapper.map_controls(risk.name, risk.description, risk.framework)
     
     risk_manager.update_risk(risk)
     
@@ -206,7 +225,6 @@ def get_stats():
         'low': 0,
         'by_status': {},
         'by_owner': {},
-        'by_framework': {},
         'top_risks': []
     }
     
@@ -240,10 +258,6 @@ def get_stats():
         owner = risk.owner or "Unassigned"
         stats['by_owner'][owner] = stats['by_owner'].get(owner, 0) + 1
 
-        # Framework counts
-        framework = risk.framework or "soc2"
-        stats['by_framework'][framework] = stats['by_framework'].get(framework, 0) + 1
-    
     return jsonify(stats)
 
 
