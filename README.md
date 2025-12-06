@@ -14,6 +14,12 @@ A specialized Governance, Risk, and Compliance (GRC) tool designed to streamline
 - **Comprehensive Analytics**: 6 interactive charts including Risk Severity, Status, and Heat Map.
 - **Readiness Checklist**: Automated tracking for SOC 2 Type 1 (Design) and Type 2 (Operating Effectiveness).
 - **Evidence Management**: Manage required artifacts (Policies, Logs, Screenshots) with status indicators.
+- **Security Scanning Module**: Automated SOC 2-relevant scanning with:
+  - **Vulnerability Scanner**: Identifies security vulnerabilities mapped to CC7.1, CC7.2
+  - **Cloud Configuration Scanner**: Detects misconfigurations mapped to CC6.1, CC6.2
+  - **Dependency Scanner**: Analyzes software components for risks mapped to CC8.x
+  - **API Attack Surface Scanner**: Monitors external endpoints mapped to C1.x
+  - Real-time findings dashboard with severity tracking and remediation status
 - **Modern UI/UX**: Premium **Inter** typography, **Slate & Indigo** theme, and high-contrast **Dark Mode**.
 
 ### CLI Tool
@@ -104,14 +110,18 @@ RiskMap/
 │   ├── riskmap/
 │   │   ├── risk_manager.py   # Core logic
 │   │   ├── control_mapper.py # AI mapping for SOC 2
+│   │   ├── scanner.py        # Security scanning module
 │   │   └── ...
 │   └── data/
 │       └── soc2_controls.json # SOC 2 Common Criteria
 ├── static/
 │   ├── css/style.css         # Modern styling (Slate/Indigo)
 │   └── js/app.js             # Dashboard logic & Chart.js
-└── templates/
-    └── index.html            # Dashboard UI
+├── templates/
+│   └── index.html            # Dashboard UI
+└── tests/
+    ├── test_core.py          # Core functionality tests
+    └── test_scanner.py       # Scanner module tests
 ```
 
 ---
