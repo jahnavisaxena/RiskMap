@@ -1,4 +1,4 @@
-# RiskMap - SOC 2 GRC Automation Tool 🛡️
+# RiskMap - SOC 2 GRC Automation Tool 
 
 [![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -8,22 +8,22 @@ A specialized Governance, Risk, and Compliance (GRC) tool designed to streamline
 
 ![RiskMap Dashboard](Screenshot.png)
 
-## 🚀 Features
+## Features
 
 ### SOC 2 Focused Web Dashboard
-- 📈 **Comprehensive Analytics**: 6 interactive charts including Risk Severity, Status, and Heat Map.
-- ✅ **Readiness Checklist**: Automated tracking for SOC 2 Type 1 (Design) and Type 2 (Operating Effectiveness).
-- 📂 **Evidence Management**: Manage required artifacts (Policies, Logs, Screenshots) with status indicators.
-- 🎨 **Modern UI/UX**: Premium **Inter** typography, **Slate & Indigo** theme, and high-contrast **Dark Mode**.
+- **Comprehensive Analytics**: 6 interactive charts including Risk Severity, Status, and Heat Map.
+- **Readiness Checklist**: Automated tracking for SOC 2 Type 1 (Design) and Type 2 (Operating Effectiveness).
+- **Evidence Management**: Manage required artifacts (Policies, Logs, Screenshots) with status indicators.
+- **Modern UI/UX**: Premium **Inter** typography, **Slate & Indigo** theme, and high-contrast **Dark Mode**.
 
 ### CLI Tool
-- 📊 **Risk Management**: Quickly add, score, and manage risks related to Trust Service Criteria (TSC).
-- 🤖 **AI-Powered Mapping**: Automatically maps risks to relevant SOC 2 Common Criteria (CC) controls using OpenAI.
-- 📁 **Export**: Generate audit-ready risk registers in CSV, JSON, or PDF.
+-  **Risk Management**: Quickly add, score, and manage risks related to Trust Service Criteria (TSC).
+-  **AI-Powered Mapping**: Automatically maps risks to relevant SOC 2 Common Criteria (CC) controls using OpenAI.
+-  **Export**: Generate audit-ready risk registers in CSV, JSON, or PDF.
 
 ---
 
-## 📦 Installation
+##  Installation
 
 ### Option 1: Install via pip
 
@@ -48,7 +48,7 @@ python app.py
 
 ---
 
-## 🖥️ CLI Usage for SOC 2
+##  CLI Usage for SOC 2
 
 ### Add a Risk
 ```bash
