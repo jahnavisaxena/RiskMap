@@ -402,6 +402,106 @@ async function deleteRisk(riskId) {
     }
 }
 
+// ========== Render Scanner Dashboard Statistics ==========
+function renderScannerDashboard(risks) {
+    if (!risks || risks.length === 0) {
+        return;
+    }
+
+    // Group risks by scanner_type
+    const scannerTypes = {
+        'Vulnerability Scanner': [],
+        'Cloud Configuration': [],
+        'Dependency Scanner': [],
+        'Attack Surface Scanner': []
+    };
+
+    risks.forEach(risk => {
+        const scannerType = risk.scanner_type || 'Manual';
+        if (scannerTypes[scannerType]) {
+            scannerTypes[scannerType].push(risk);
+        }
+    });
+
+    // Update Vulnerability Scanner
+    updateScannerCard('vuln', scannerTypes['Vulnerability Scanner']);
+
+    // Update Cloud Config Scanner
+    updateScannerCard('cloud', scannerTypes['Cloud Configuration']);
+
+    // Update Dependency Scanner
+    updateScannerCard('dep', scannerTypes['Dependency Scanner']);
+
+    // Update Attack Surface Scanner
+    updateScannerCard('attack', scannerTypes['Attack Surface Scanner']);
+}
+
+function updateScannerCard(prefix, risks) {
+    const severityCounts = {
+        critical: 0,
+        high: 0,
+        medium: 0,
+        low: 0
+    };
+
+    let highRiskCount = 0;
+    let totalCount = risks.length;
+
+    risks.forEach(r => {
+        const score = r.score || (r.likelihood * r.impact);
+        if (score >= 20) {
+            severityCounts.critical++;
+            highRiskCount++;
+        } else if (score >= 15) {
+            severityCounts.high++;
+            highRiskCount++;
+        } else if (score >= 10) {
+            severityCounts.medium++;
+        } else {
+            severityCounts.low++;
+        }
+    });
+
+    // Update metrics
+    const highEl = document.getElementById(`cnt-${prefix}-high`);
+    const totalEl = document.getElementById(`cnt-${prefix}-total`);
+
+    if (highEl) highEl.textContent = highRiskCount;
+    if (totalEl) totalEl.textContent = totalCount;
+
+    // Render donut chart
+    const chartId = `${prefix}ScannerChart`;
+    const canvas = document.getElementById(chartId);
+    if (!canvas) return;
+
+    const existingChart = Chart.getChart(chartId);
+    if (existingChart) existingChart.destroy();
+
+    new Chart(canvas, {
+        type: 'doughnut',
+        data: {
+            labels: ['Critical', 'High', 'Medium', 'Low'],
+            datasets: [{
+                data: [
+                    severityCounts.critical,
+                    severityCounts.high,
+                    severityCounts.medium,
+                    severityCounts.low
+                ],
+                backgroundColor: ['#DC3545', '#FF6B35', '#FFC107', '#28A745'],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            cutout: '65%',
+            plugins: {
+                legend: { display: false },
+                tooltip: { enabled: true }
+            }
+        }
+    });
+}
+
 // Render Comprehensive SOC 2 Charts
 function renderSoc2Charts(stats, risks) {
     // Darker text for light mode (#0f172a), lighter for dark mode (#cbd5e1)

@@ -181,7 +181,16 @@ def scan(
     table.add_column("Description")
     
     for r in risks_found:
-        severity = "High" if r['impact'] >= 4 else "Medium"
+        # Calculate score to match dashboard severity logic
+        score = r['likelihood'] * r['impact']
+        if score >= 20:
+            severity = "Critical"
+        elif score >= 15:
+            severity = "High"
+        elif score >= 10:
+            severity = "Medium"
+        else:
+            severity = "Low"
         table.add_row(r['name'], severity, r['description'])
         
     console.print(table)
