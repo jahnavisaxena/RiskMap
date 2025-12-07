@@ -10,7 +10,7 @@ from .control_mapper import ControlMapper
 from .register_exporter import export_to_csv, export_to_json
 from .pdf_exporter import export_to_pdf
 
-app = typer.Typer(help="📘 RiskMap - Multi-Framework GRC Risk & Control Mapping Tool")
+app = typer.Typer(help=" RiskMap - SOC2 Risk & Control Mapping Tool")
 console = Console()
 risk_manager = RiskManager()
 control_mapper = ControlMapper()
